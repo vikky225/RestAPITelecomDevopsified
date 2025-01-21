@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Phone Number Management API
+  version: 1.0.0
+paths:
+  /phone-numbers:
+    get:
+      summary: Get all phone numbers
+      responses:
+        '200':
+          description: A list of all phone numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /phone-numbers/{customerId}:
+    get:
+      summary: Get phone numbers for a specific customer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of phone numbers for the specified customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: Customer not found
+    post:
+      summary: Activate a phone number
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: phoneNumber
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Phone number activated successfully
+        '400':
+          description: Invalid request or phone number not found
+components:
+  schemas:
+    PhoneNumber:
+      type: string
