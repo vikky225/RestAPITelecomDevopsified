@@ -55,5 +55,5 @@ jobs:
       - name: Removing Existing Container
         run: sudo docker rm -f customer-container || true
       - name: Run docker container
-        run: sudo ocker run -d -p 8080:8080 --name customer-container vikky225/customer-contacts-app:latest
+        run: sudo docker run -d -p 8080:8080 --name customer-container vikky225/customer-contacts-app:latest
 
