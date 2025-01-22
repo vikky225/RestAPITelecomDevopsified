@@ -28,21 +28,17 @@ jobs:
         run: mvn clean package
 
       - name: Build Docker image
-        run: sudo docker build -t vikky225/customer-contacts-app:latest .
+        run: docker build -t vikky225/customer-contacts-app:latest .
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Push Docker image
-        run: sudo docker push vikky225/customer-contacts-app:latest
-
-      - name: Run Docker Compose
-        run: sudo docker-compose up --build -d
+        run: docker push vikky225/customer-contacts-app:latest
 
   deploy:
     needs: build
     runs-on: [self-hosted,aws-ec2]
-
 
     steps:
       - name: Install Docker
