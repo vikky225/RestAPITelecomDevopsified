@@ -40,7 +40,7 @@ public class PhoneNumberControllerIntegrationTest {
         mockMvc = MockMvcBuilders.standaloneSetup(new PhoneNumberController(phoneNumberService)).build();
 
         mockMvc.perform(post("/phone-numbers/1")
-                        .param("phoneNumber", "+1234567890")
+                        .param("phoneNumber", "+1234567891")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

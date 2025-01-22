@@ -12,6 +12,30 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(PhoneNumberNotFoundException.class)
+    public ResponseEntity<String> handlePhoneNumberNotFoundException(PhoneNumberNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+
+
+
+    }
+
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PhoneNumberAlreadyActivtedException.class)
+    public ResponseEntity<String> handlePhoneNumberAlreadyActivatedException(PhoneNumberAlreadyActivtedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidPhoneNumberFormatException.class)
+    public ResponseEntity<String> handleInvalidPhoneNumberFormatException(InvalidPhoneNumberFormatException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();

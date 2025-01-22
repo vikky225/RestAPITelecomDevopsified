@@ -1,5 +1,8 @@
 package com.telecom.customer_contacts.service;
 
+import com.telecom.customer_contacts.exception.CustomerNotFoundException;
+import com.telecom.customer_contacts.exception.InvalidPhoneNumberFormatException;
+import com.telecom.customer_contacts.exception.PhoneNumberAlreadyActivtedException;
 import com.telecom.customer_contacts.model.dto.PhoneNumberDto;
 import com.telecom.customer_contacts.model.entity.CustomerEntity;
 import com.telecom.customer_contacts.model.entity.PhoneNumberEntity;
@@ -13,11 +16,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,10 +71,56 @@ class PhoneNumberServiceTest {
         String customerId = "1";
         String phoneNumber = "+1234567890";
         CustomerEntity customer = new CustomerEntity();
+        customer.setPhoneNumbers(new ArrayList<>());
         when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
-
         phoneNumberService.activatePhoneNumber(customerId, phoneNumber);
-
         verify(phoneNumberRepository, times(1)).save(any(PhoneNumberEntity.class));
     }
+
+    @Test
+    public void testGetPhoneNumbersByCustomer_CustomerNotFound() {
+        String customerId = "123";
+        when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.empty());
+
+        assertThrows(CustomerNotFoundException.class, () -> {
+            phoneNumberService.getPhoneNumbersByCustomer(customerId);
+        });
+    }
+
+    @Test
+    public void testActivatePhoneNumber_CustomerNotFound() {
+        String customerId = "123";
+        String phoneNumber = "1234567890";
+        when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.empty());
+
+        assertThrows(CustomerNotFoundException.class, () -> {
+            phoneNumberService.activatePhoneNumber(customerId, phoneNumber);
+        });
+    }
+
+    @Test
+    public void testActivatePhoneNumber_InvalidPhoneNumberFormat() {
+        String customerId = "123";
+        String phoneNumber = "invalid";
+        CustomerEntity customer = new CustomerEntity();
+        when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
+
+        assertThrows(InvalidPhoneNumberFormatException.class, () -> {
+            phoneNumberService.activatePhoneNumber(customerId, phoneNumber);
+        });
+    }
+
+
+    @Test
+    public void testActivatePhoneNumber_PhoneNumberAlreadyActivated() {
+        String customerId = "123";
+        String phoneNumber = "1234567890";
+        CustomerEntity customer = new CustomerEntity();
+    customer.setPhoneNumbers(List.of(PhoneNumberEntity.builder().phoneNumber(phoneNumber).build()));
+    when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
+
+    assertThrows(PhoneNumberAlreadyActivtedException.class, () -> {
+        phoneNumberService.activatePhoneNumber(customerId, phoneNumber);
+    });
+}
 }
