@@ -1,8 +1,5 @@
 package com.telecom.customer_contacts.controller;
 
-import com.telecom.customer_contacts.exception.CustomerNotFoundException;
-import com.telecom.customer_contacts.exception.InvalidPhoneNumberFormatException;
-import com.telecom.customer_contacts.exception.PhoneNumberAlreadyActivtedException;
 import com.telecom.customer_contacts.model.dto.PhoneNumberDto;
 import com.telecom.customer_contacts.service.PhoneNumberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,14 +42,10 @@ public class PhoneNumberController {
     @ApiResponse(responseCode = "404", description = "Customer not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<List<PhoneNumberDto>> getPhoneNumbersByCustomer(@PathVariable String customerId) {
-        try {
+
             List<PhoneNumberDto> phoneNumbers = phoneNumberService.getPhoneNumbersByCustomer(customerId);
-            return phoneNumbers.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(phoneNumbers);
-        } catch (CustomerNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(500).build();
-        }
+            return  ResponseEntity.ok(phoneNumbers);
+
     }
 
     @PostMapping("/customers/{customerId}/phone-numbers")
@@ -63,16 +56,10 @@ public class PhoneNumberController {
     @ApiResponse(responseCode = "400", description = "Invalid request or phone number not found")
     @ApiResponse(responseCode = "409", description = "Phone number already activated")
     public ResponseEntity<Void> activatePhoneNumber(@PathVariable String customerId, @Valid @RequestParam String phoneNumber) {
-        try {
+
             phoneNumberService.activatePhoneNumber(customerId, phoneNumber);
             return ResponseEntity.ok().build();
-        } catch (CustomerNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        } catch (PhoneNumberAlreadyActivtedException e) {
-            return ResponseEntity.status(409).build();
-        } catch (InvalidPhoneNumberFormatException e) {
-            return ResponseEntity.status(400).build();
-        }
+
     }
 
 

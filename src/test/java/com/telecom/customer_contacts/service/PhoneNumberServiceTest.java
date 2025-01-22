@@ -57,7 +57,6 @@ class PhoneNumberServiceTest {
         customer.setPhoneNumbers(List.of(phoneNumberEntity));
         when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
 
-
         List<PhoneNumberDto> phoneNumbers = phoneNumberService.getPhoneNumbersByCustomer(customerId);
         assertEquals(1, phoneNumbers.size());
         assertEquals("+1234567890", phoneNumbers.getFirst().getPhoneNumber());
@@ -97,10 +96,9 @@ class PhoneNumberServiceTest {
 
     @Test
     public void testActivatePhoneNumber_InvalidPhoneNumberFormat() {
-        String customerId = "123";
-        String phoneNumber = "invalid";
+        String customerId = "1";
+        String phoneNumber = "iii";
         CustomerEntity customer = new CustomerEntity();
-        when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
 
         assertThrows(InvalidPhoneNumberFormatException.class, () -> {
             phoneNumberService.activatePhoneNumber(customerId, phoneNumber);

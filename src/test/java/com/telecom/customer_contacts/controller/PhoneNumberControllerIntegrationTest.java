@@ -30,7 +30,7 @@ public class PhoneNumberControllerIntegrationTest {
     public void testGetAllPhoneNumbers() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(new PhoneNumberController(phoneNumberService)).build();
 
-        mockMvc.perform(get("/phone-numbers")
+        mockMvc.perform(get("/api/phone-numbers")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -39,9 +39,20 @@ public class PhoneNumberControllerIntegrationTest {
     public void testActivatePhoneNumber() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(new PhoneNumberController(phoneNumberService)).build();
 
-        mockMvc.perform(post("/phone-numbers/1")
+        mockMvc.perform(post("/api/customers/{customerId}/phone-numbers", "1")
                         .param("phoneNumber", "+1234567891")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+
+    @Test
+    public void testGetPhoneNumbersByCustomer() throws Exception {
+        mockMvc = MockMvcBuilders.standaloneSetup(new PhoneNumberController(phoneNumberService)).build();
+
+        mockMvc.perform(get("/api/customers/{customerId}/phone-numbers", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }
+
