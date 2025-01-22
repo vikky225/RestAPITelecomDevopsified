@@ -41,7 +41,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [aws-ec2]
+    runs-on: [self-hosted,aws-ec2]
 
 
     steps:
@@ -50,12 +50,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker.io
 
-      - name: Pull Image from Docker
-        run: sudo docker pull vikky225/customer-contacts-app:latest
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose   
 
-      - name: Removing Existing Container
-        run: sudo docker rm -f customer-container || true
-
-      - name: Run docker container
-        run: sudo docker run -d -p 8080:8080 --name customer-container vikky225/customer-contacts-app:latest
+      - name: Pull and run docker compose
+        run: |
+          sudo docker-compose down
+          sudo docker-compose pull
+          sudo docker-compose up --build -d
 
