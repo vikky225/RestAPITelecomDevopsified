@@ -34,14 +34,14 @@ jobs:
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Push Docker image
-        run: docker push vikky225/customer-contacts-app:latest
+        run: sudo docker push vikky225/customer-contacts-app:latest
 
       - name: Run Docker Compose
-        run: docker-compose up -d
+        run: sudo docker-compose up --build -d
 
   deploy:
     needs: build
-    runs-on: self-hosted
+    runs-on: [aws-ec2]
 
 
     steps:
@@ -55,6 +55,7 @@ jobs:
 
       - name: Removing Existing Container
         run: sudo docker rm -f customer-container || true
+
       - name: Run docker container
         run: sudo docker run -d -p 8080:8080 --name customer-container vikky225/customer-contacts-app:latest
 
