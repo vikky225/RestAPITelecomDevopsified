@@ -1,10 +1,8 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: [self-hosted,aws-ec2]
@@ -36,7 +34,12 @@ jobs:
 
       - name: Enable Docker BuildKit
         run: |
-          export DOCKER_BUILDKIT=1    
+          export DOCKER_BUILDKIT=1   
+
+      - name: Start Docker service
+        run: |
+          sudo systemctl start docker
+          sudo systemctl enable docker     
           
 
       - name: Build with Maven
