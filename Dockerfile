@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy the project’s jar file into the container
 COPY target/customer-contacts-0.0.1-SNAPSHOT.jar app.jar
 
+ENV Spring_Profiles_Active=docker
+
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 

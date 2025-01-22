@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -31,28 +31,19 @@ jobs:
       - name: Push Docker image
         run: docker push vikky225/customer-contacts-app:latest
 
+      - name: Run Docker Compose
+        run: docker-compose up -d
+
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: aws-ec2
     needs: build
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Pull Image from Docker
+        run: docker pull vikky225/customer-contacts-app:latest
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+      - name: Removing Existing Container
+        run: docker rm -f customer-container || true
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 --name customer-container vikky225/customer-contacts-app:latest
 
-      - name: Set up kubectl
-        uses: aws-actions/eks-kubectl-action@v1
-        with:
-          cluster-name: your-cluster-name
-          region: us-west-2
-
-      - name: Deploy to EKS
-        run: |
-          kubectl apply -f k8s/postgres.yaml
-          kubectl apply -f k8s/deployment.yaml

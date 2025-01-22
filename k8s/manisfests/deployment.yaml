@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: customer-contacts-app
-          image: your-dockerhub-username/customer-contacts-app:latest
+          image: vikky225/customer-contacts-app:latest
           ports:
             - containerPort: 8080
           env:
