@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "customer_entity")
 public class CustomerEntity {
 
@@ -18,13 +17,13 @@ public class CustomerEntity {
 
     private String name;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "customer_id", unique = true, nullable = false)
+    private String customerId;
+
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<PhoneNumberEntity> phoneNumbers;
 
     public Long getId() {
         return id;
@@ -32,6 +31,14 @@ public class CustomerEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCustomerId() {
@@ -49,15 +56,5 @@ public class CustomerEntity {
     public void setPhoneNumbers(List<PhoneNumberEntity> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
-
-    @Column(name = "customer_id", unique = true, nullable = false)
-    private String customerId;
-
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<PhoneNumberEntity> phoneNumbers;
-
-
-
 }
 

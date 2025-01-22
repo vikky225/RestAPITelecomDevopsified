@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/phone-numbers")
+@RequestMapping("/api")
 public class PhoneNumberController {
 
     private final PhoneNumberService phoneNumberService;
@@ -27,7 +27,7 @@ public class PhoneNumberController {
         this.phoneNumberService = phoneNumberService;
     }
 
-    @GetMapping
+    @GetMapping("/phone-numbers")
     @Operation(summary = "Get all phone numbers", description = "Retrieves a list of all registered phone numbers.")
     @ApiResponse(responseCode = "200", description = "List of phone numbers",
             content = @Content(mediaType = "application/json",
@@ -36,7 +36,7 @@ public class PhoneNumberController {
         return phoneNumberService.getAllPhoneNumbers();
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/customers/{customerId}/phone-numbers")
     @Operation(summary = "Get phone numbers for a specific customer", description = "Retrieves a list of phone numbers associated with the given customer ID.",
             parameters = @Parameter(name = "customerId", description = "Customer ID", required = true))
     @ApiResponse(responseCode = "200", description = "List of phone numbers for the customer",
@@ -55,8 +55,7 @@ public class PhoneNumberController {
         }
     }
 
-
-    @PostMapping("/{customerId}")
+    @PostMapping("/customers/{customerId}/phone-numbers")
     @Operation(summary = "Activate a phone number for a customer", description = "Activates the specified phone number for the given customer.",
             parameters = {@Parameter(name = "customerId", description = "Customer ID", required = true),
                     @Parameter(name = "phoneNumber", description = "Phone number to activate", required = true)})
@@ -75,4 +74,6 @@ public class PhoneNumberController {
             return ResponseEntity.status(400).build();
         }
     }
+
+
 }

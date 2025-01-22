@@ -14,14 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,8 +34,7 @@ class PhoneNumberServiceTest {
     @Mock
     private CustomerRepository customerRepository;
 
-    @Mock
-    private ModelMapper modelMapper;
+
 
     @BeforeEach
     public void setUp() {
@@ -59,7 +56,7 @@ class PhoneNumberServiceTest {
         phoneNumberEntity.setPhoneNumber("+1234567890");
         customer.setPhoneNumbers(List.of(phoneNumberEntity));
         when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
-        when(modelMapper.map(phoneNumberEntity, PhoneNumberDto.class)).thenReturn(new PhoneNumberDto("+1234567890"));
+
 
         List<PhoneNumberDto> phoneNumbers = phoneNumberService.getPhoneNumbersByCustomer(customerId);
         assertEquals(1, phoneNumbers.size());
@@ -116,11 +113,13 @@ class PhoneNumberServiceTest {
         String customerId = "123";
         String phoneNumber = "1234567890";
         CustomerEntity customer = new CustomerEntity();
-    customer.setPhoneNumbers(List.of(PhoneNumberEntity.builder().phoneNumber(phoneNumber).build()));
-    when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
+        PhoneNumberEntity phoneNumberEntity = new PhoneNumberEntity();
+        phoneNumberEntity.setPhoneNumber(phoneNumber);
+        customer.setPhoneNumbers(List.of(phoneNumberEntity));
+        when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
 
-    assertThrows(PhoneNumberAlreadyActivtedException.class, () -> {
-        phoneNumberService.activatePhoneNumber(customerId, phoneNumber);
-    });
+        assertThrows(PhoneNumberAlreadyActivtedException.class, () -> {
+            phoneNumberService.activatePhoneNumber(customerId, phoneNumber);
+        });
 }
 }
