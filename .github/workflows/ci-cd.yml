@@ -40,8 +40,9 @@ jobs:
         run: docker-compose up -d
 
   deploy:
-    runs-on: self-hosted
     needs: build
+    runs-on: self-hosted
+
 
     steps:
       - name: Install Docker
