@@ -5,8 +5,13 @@
 # Customer Contacts API
 
 ## Problem Statement
-The Customer Contacts API is designed to manage customer contact details for a telecom company. 
-It provides endpoints to create, read, update, and delete customer contact information.
+We are a Telecom operator. In our database, we are starting to store phone numbers
+associated to customers (1 customer: N phone numbers) and we will provide
+interfaces to manage them.
+We need to provide the below capabilities:
+• get all phone numbers
+• get all phone numbers of a single customer
+• activate a phone number
 
 ## Prerequisites
 - Java 21
@@ -14,6 +19,7 @@ It provides endpoints to create, read, update, and delete customer contact infor
 - Docker
 - Docker Compose
 - Gitops (Github Action)
+- AWS Cloud Access
 
 ## Running the Application Locally
 
@@ -62,8 +68,14 @@ It provides endpoints to create, read, update, and delete customer contact infor
    docker-compose down
    ```
 
+Swagger
+
+GitOps Githubaction Works
+
+
 ## Additional Information
-- The application uses PostgreSQL as the database.
+- The application uses PostgreSQL as the database for docker environment
 - The Docker Compose file sets up both the application and the PostgreSQL database.
 - Ensure that the `target` directory is not excluded by `.dockerignore` to include the JAR file in the Docker build context.
+- Locally we are using in memeory Database H2 to test and run all the integration test as well 
 ```
