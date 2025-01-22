@@ -69,10 +69,27 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose   
 
-      - name: Pull and run docker compose
+      - name: Pull Docker images
         run: |
-          cd /home/ubuntu/actions-runner/_work/RestAPITelecomDevopsified/RestAPITelecomDevopsified
-          sudo docker-compose down
-          sudo docker-compose pull
-          sudo docker-compose up --build -d
+          sudo docker pull postgres:13
+          sudo docker pull vikky225/customer-contacts-app:latest
+
+      - name: Run Postgres container
+        run: |
+          sudo docker run -d --name db \
+            -e POSTGRES_DB=customer_contacts \
+            -e POSTGRES_USER=user \
+            -e POSTGRES_PASSWORD=password \
+            -p 5433:5432 \
+            postgres:13
+
+      - name: Run customer-contacts-app container
+        run: |
+          sudo docker run -d --name app \
+            --link db:db \
+            -e SPRING_PROFILES_ACTIVE=docker \
+            -p 8080:8080 \
+            vikky225/customer-contacts-app:latest
+      
+    
 
