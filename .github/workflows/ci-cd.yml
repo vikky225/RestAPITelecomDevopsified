@@ -48,11 +48,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io
+
       - name: Pull Image from Docker
-        run: docker pull vikky225/customer-contacts-app:latest
+        run: sudo docker pull vikky225/customer-contacts-app:latest
 
       - name: Removing Existing Container
-        run: docker rm -f customer-container || true
+        run: sudo docker rm -f customer-container || true
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name customer-container vikky225/customer-contacts-app:latest
+        run: sudo ocker run -d -p 8080:8080 --name customer-container vikky225/customer-contacts-app:latest
 
