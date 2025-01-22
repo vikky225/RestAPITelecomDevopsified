@@ -37,7 +37,7 @@ jobs:
         run: docker push vikky225/customer-contacts-app:latest
 
       - name: Run Docker Compose
-        run: docker-compose up --build
+        run: docker-compose up -d
 
   deploy:
     runs-on: aws-ec2
