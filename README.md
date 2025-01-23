@@ -81,7 +81,7 @@ Swagger
 - Swagger API Documentation: Open your browser and navigate to `http://localhost:8080/swagger-ui.html`.
 
 ## Running the Application in AWS Cloud
-13.211.152.243:8080/swagger-ui.html
+http://13.211.152.243:8080/swagger-ui.html
  
 endpoints
 - GET /api/v1/phone-numbers
