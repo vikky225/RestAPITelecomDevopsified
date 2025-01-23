@@ -2,7 +2,7 @@
 @phoneNumber = +1234567890
 
 # GET all phone numbers
-GET http://localhost:8080/phone-numbers
+GET http://localhost:8080/api/phone-numbers
 Content-Type: application/json
 
 <> 2025-01-21T231822.200.json
@@ -10,8 +10,9 @@ Content-Type: application/json
 ###
 
 # GET phone numbers for a specific customer
-GET http://localhost:8080/phone-numbers/{{customerId}}
+GET http://localhost:8080/api/customers/{{customerId}}/phone-numbers
 Content-Type: application/json
+
 
 
 

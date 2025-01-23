@@ -5,6 +5,7 @@
 # Customer Contacts API
 
 ## Problem Statement
+
 We are a Telecom operator. In our database, we are starting to store phone numbers
 associated to customers (1 customer: N phone numbers) and we will provide
 interfaces to manage them.
@@ -12,6 +13,12 @@ We need to provide the below capabilities:
 • get all phone numbers
 • get all phone numbers of a single customer
 • activate a phone number
+
+## Challenge
+Provide API specifications for the above functions/capabilities.
+Provide a REST API implementation of the formulated specifications.
+You can assume the phone numbers as a static data structure that is initialised when
+your program runs.
 
 ## Prerequisites
 - Java 21
@@ -41,6 +48,8 @@ We need to provide the below capabilities:
 
 4. **Access the application:**
    Open your browser and navigate to `http://localhost:8080`.
+5. **Swagger API Documentation:**
+   Open your browser and navigate to `http://localhost:8080/swagger-ui.html`. 
 
 ## Running the Application in a Dockerized Environment
 
@@ -69,9 +78,15 @@ We need to provide the below capabilities:
    ```
 
 Swagger
+- Swagger API Documentation: Open your browser and navigate to `http://localhost:8080/swagger-ui.html`.
 
-GitOps Githubaction Works
-
+## Running the Application in AWS Cloud
+13.211.152.243:8080/swagger-ui.html
+ 
+endpoints
+- GET /api/v1/phone-numbers
+- GET /api/v1/phone-numbers/{customerId}
+- POST /api/v1/phone-numbers/{phoneNumber}/activate
 
 ## Additional Information
 - The application uses PostgreSQL as the database for docker environment
