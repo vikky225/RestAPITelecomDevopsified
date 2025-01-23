@@ -1,12 +1,40 @@
 name: CI/CD Pipeline
+
 on:
   push:
     branches:
       - main
-jobs:
-  build:
-    runs-on: [self-hosted,aws-ec2]
 
+jobs:
+  prepare-environment:
+    runs-on: [self-hosted, aws-ec2]
+    steps:
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Add user to docker group
+        run: |
+          sudo usermod -aG docker $USER
+
+      - name: Enable Docker BuildKit
+        run: |
+          export DOCKER_BUILDKIT=1
+
+      - name: Start Docker service
+        run: |
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+  build:
+    needs: prepare-environment
+    runs-on: [self-hosted, aws-ec2]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,36 +44,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io    
-
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose  
-
-      - name: Install Maven
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y maven    
-
-      - name: Add user to docker group
-        run: |
-          sudo usermod -aG docker $USER
-         
-
-      - name: Enable Docker BuildKit
-        run: |
-          export DOCKER_BUILDKIT=1   
-
-      - name: Start Docker service
-        run: |
-          sudo systemctl start docker
-          sudo systemctl enable docker     
-          
 
       - name: Build with Maven
         run: mvn clean package
@@ -61,19 +59,8 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [self-hosted,aws-ec2]
-
+    runs-on: [self-hosted, aws-ec2]
     steps:
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose   
-
       - name: Pull Docker images
         run: |
           sudo docker pull postgres:13
@@ -95,6 +82,3 @@ jobs:
             -e SPRING_PROFILES_ACTIVE=docker \
             -p 8080:8080 \
             vikky225/customer-contacts-app:latest
-      
-    
-
