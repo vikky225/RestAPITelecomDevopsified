@@ -83,7 +83,7 @@ Swagger
 ## Running the Application in AWS Cloud
 http://13.211.152.243:8080/swagger-ui.html
  
-endpoints
+valid endpoints to test
 - GET /api/v1/phone-numbers
 - GET /api/v1/phone-numbers/{customerId}
 - POST /api/customers/{customerId}/phone-numbers?phoneNumber={phoneNumber}
