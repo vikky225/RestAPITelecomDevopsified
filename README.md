@@ -86,7 +86,7 @@ Swagger
 endpoints
 - GET /api/v1/phone-numbers
 - GET /api/v1/phone-numbers/{customerId}
-- POST /api/v1/phone-numbers/{phoneNumber}/activate
+- POST /api/customers/{customerId}/phone-numbers?phoneNumber={phoneNumber}
 
 ## CI/CD USED GITHUB ACTIONS TO BUILD AND DEPLOY THE APPLICATION IN AWS CLOUD (EC2 Self runner)
 ![img.png](img.png)
