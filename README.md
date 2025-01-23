@@ -97,6 +97,10 @@ valid endpoints to test
 ## AWS EC2 INSTANCE
 ![img_2.png](img_2.png)
 
+
+## Detail Video to Run Application and Test Scenarios
+https://drive.google.com/file/d/1_slyfpDNCy_DIpE3uo2SS9Jp_CNVPAiH/view
+
 ## Additional Information
 - The application uses PostgreSQL as the database for docker environment
 - The Docker Compose file sets up both the application and the PostgreSQL database.
