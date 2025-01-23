@@ -15,7 +15,7 @@ Content-Type: application/json
 
 
 
-
-
-
+# POST activate a phone number for a customer
+# POST http://localhost:8080/api/customers/{customerId}/phone-numbers?phoneNumber={phoneNumber}
+# Content-Type: application/json
 
