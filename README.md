@@ -88,6 +88,15 @@ endpoints
 - GET /api/v1/phone-numbers/{customerId}
 - POST /api/v1/phone-numbers/{phoneNumber}/activate
 
+## CI/CD USED GITHUB ACTIONS TO BUILD AND DEPLOY THE APPLICATION IN AWS CLOUD (EC2 Self runner)
+![img.png](img.png)
+
+## POSTMAN TEST
+![img_1.png](img_1.png)
+
+## AWS EC2 INSTANCE
+![img_2.png](img_2.png)
+
 ## Additional Information
 - The application uses PostgreSQL as the database for docker environment
 - The Docker Compose file sets up both the application and the PostgreSQL database.
