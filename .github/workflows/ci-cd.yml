@@ -79,6 +79,12 @@ jobs:
           sudo docker pull postgres:13
           sudo docker pull vikky225/customer-contacts-app:latest
 
+      - name: Remove existing db container if it exists
+        run: |
+         if [ $(sudo docker ps -a -q -f name=db) ]; then
+          sudo docker rm -f db
+         fi     
+
       - name: Run Postgres container
         run: |
           sudo docker run -d --name db \
