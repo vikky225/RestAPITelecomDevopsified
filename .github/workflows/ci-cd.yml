@@ -85,6 +85,12 @@ jobs:
           sudo docker rm -f db
          fi     
 
+      - name: Remove existing app container if it exists
+        run: |
+         if [ $(sudo docker ps -a -q -f name=app) ]; then
+         sudo docker rm -f app
+         fi    
+
       - name: Run Postgres container
         run: |
           sudo docker run -d --name db \
